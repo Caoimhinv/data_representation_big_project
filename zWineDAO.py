@@ -13,8 +13,9 @@ class WineDAO:
 
     def create(self, wine):
         cursor = self.db.cursor()
-        sql = "insert into wine (name, vintage, country, grape, region, colour) values (%s, %s, %s, %s, %s, %s)"
+        sql = "insert into wine (id, name, vintage, country, grape, region, colour) values (%s, %s, %s, %s, %s, %s)"
         values = [
+            wine['id'],
             wine['name'],
             wine['vintage'],
             wine['country'],
@@ -40,7 +41,7 @@ class WineDAO:
         return returnArray
 
     def convertToDict(self, result):
-        colNames = ['name', 'vintage', 'country', 'grape', 'region', 'colour']
+        colNames = ['id', 'name', 'vintage', 'country', 'grape', 'region', 'colour']
         wine = {}
         if result:
             for i, colName in enumerate(colNames):
@@ -58,8 +59,9 @@ class WineDAO:
 
     def update(self, wine):
         cursor = self.db.cursor()
-        sql = "update wine set name = %s, vintage = %s, country = %s, grape = %s, region = %s, colour = %s"
+        sql = "update wine set id = %s, name = %s, vintage = %s, country = %s, grape = %s, region = %s, colour = %s"
         values = [
+            wine['id'],
             wine['name'],
             wine['vintage'],
             wine['country'],
