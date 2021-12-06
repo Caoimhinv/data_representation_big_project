@@ -13,7 +13,7 @@ class WineDAO:
 
     def create(self, wine):
         cursor = self.db.cursor()
-        sql = "insert into wine (id, name, vintage, country, grape, region, colour) values (%s, %s, %s, %s, %s, %s)"
+        sql = "insert into wine (id, name, vintage, country, grape, region, colour) values (%s, %s, %s, %s, %s, %s, %s)"
         values = [
             wine['id'],
             wine['name'],

@@ -2,7 +2,7 @@ from flask import Flask, url_for, request, redirect, abort, jsonify
 
 from zWineDAO import wineDAO
 
-app = Flask(__name__, static_url_path='', static_folder='staticpages')
+app = Flask(__name__, static_url_path='', static_folder='static_pages')
 
 @app.route('/')
 def index():

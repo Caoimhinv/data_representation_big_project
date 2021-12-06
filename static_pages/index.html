@@ -1,0 +1,262 @@
+
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <div id="create-update" style="display:none">
+                <h2>create-edit</h2>
+                <table id="createUpdateForm">
+                    <tr>
+                        <td>id</td>
+                        <td><input type="number" name="id" id="idInput"></td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td><input type="text" name="name"></td>
+                    </tr>
+                    <tr>
+                        <td>vintage</td>
+                        <td><input type="number" name="vintage"></td>
+                    </tr>
+                    <tr>
+                        <td>country</td>
+                        <td><input type="text" name="country"></td>
+                    </tr>
+                    <tr>
+                        <td>grape</td>
+                        <td><input type="text" name="grape"></td>
+                    </tr>
+                    <tr>
+                        <td>region</td>
+                        <td><input type="text" name="region"></td>
+                    </tr>
+                    <tr>
+                        <td>colour</td>
+                        <td><input type="text" name="colour"></td>
+                    </tr>
+                    <tr>
+                        <td></td><td>
+                            <button id="create-button" onclick="doCreate()">Create</button>
+                            <button id="update-button" onclick="doUpdate()">Update</button>
+                        </td>
+                    </tr>
+
+                </table>
+        </div>
+        <div id="display">
+            <h2>wines</h2>
+            <button onclick="showCreate()">Create</button>
+            <table id="wineTable" class="table">
+                <tr>
+                    <th>id</th><th>name</th><th>vintage</th><th>country</th><th>grape</th><th>region</th><th>colour</th><th></th><th></th>
+                </tr>    
+            </table>
+            
+        </div>
+
+        <script>
+            function showCreate(){
+                document.getElementById('display').style.display="none"
+                document.getElementById('update-button').style.display="none"
+                document.getElementById('create-update').style.display="block"
+                document.getElementById('create-update').style.display="block"
+
+            }
+            function showUpdate(thisElem){
+                var rowElement = thisElem.parentNode.parentNode;
+                wine = readWineFromRow(rowElement)
+                populateForm(wine)
+
+                document.getElementById('display').style.display="none"
+                document.getElementById('update-button').style.display="block"
+                document.getElementById('create-update').style.display="none"
+                document.getElementById('create-update').style.display="block"
+
+            }
+            function readWineFromRow(rowElement){
+                wine = {}
+                wine.id = rowElement.getAttribute("id"); 
+                wine.name = rowElement.cells[1].firstChild.textContent
+                wine.vintage = rowElement.cells[2].firstChild.textContent
+                wine.country = rowElement.cells[3].firstChild.textContent
+                wine.grape = rowElement.cells[4].firstChild.textContent
+                wine.region = rowElement.cells[5].firstChild.textContent
+                wine.colour = rowElement.cells[6].firstChild.textContent
+
+                return wine
+            }
+            function populateForm(wine){
+                var form = document.getElementById('createUpdateForm')
+      
+                form.querySelector('input[name="id"]').value = wine.id
+                form.querySelector('input[name="id"]').disabled=true
+
+                form.querySelector('input[name="name"]').value = wine.name
+                form.querySelector('input[name="vintage"]').value = wine.vintage
+                form.querySelector('input[name="country"]').value = wine.country
+                form.querySelector('input[name="grape"]').value = wine.grape
+                form.querySelector('input[name="region"]').value = wine.region
+                form.querySelector('input[name="colour"]').value = wine.colour
+            }
+            function clearForm(){
+                var form = document.getElementById('createUpdateForm')
+      
+                form.querySelector('input[name="id"]').value = ''
+                form.querySelector('input[name="id"]').disabled=false
+
+                form.querySelector('input[name="name"]').value = ''
+                form.querySelector('input[name="vintage"]').value = ''
+                form.querySelector('input[name="country"]').value = ''
+                form.querySelector('input[name="grape"]').value = ''
+                form.querySelector('input[name="region"]').value = ''
+                form.querySelector('input[name="colour"]').value = ''
+            }
+            
+            function doCreate(){
+                console.log("in doCreate")
+                wine = getWineFromForm()
+                console.log(wine)
+                $.ajax({
+                    url:"/wine",
+                    data:JSON.stringify(wine),
+                    method:"POST",
+                    dataType:"JSON",
+                    contentType: "application/json; charset=utf-8",
+                    success:function(result){
+                        console.log(result)
+                        addWineToTable(wine)
+                        showDisplay()
+                        clearForm()
+                    },
+                    error:function (xhr,status,error){
+                        console.log ("error"+error)
+
+                    }
+
+                })
+            function doUpdate(){
+                wine = getWineFromForm()
+                updateServer(wine)
+                updateTableRow(wine)
+                showDisplay()
+            }
+            function updateServer(){
+                $.ajax({
+                    url:'/wine/'+wine.id,
+                    data: JSON.stringify(wine),
+                    method: "PUT",
+                    dataType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        console.log(result)
+                        updateTableRow(wine)
+                        showDisplay()
+                        clearForm()
+                    }
+                })
+            }
+            function doDelete(thisElem){
+                var tableElement = document.getElementById('wineTable');
+                var rowElement = thisElem.parentNode.parentNode;
+                var index = rowElement.rowIndex;
+                id = rowElement.getAttribute("id");
+                $.ajax({
+                    url:"/wine"+id,
+                    method:"DELETE",
+                    dataType:"JSON",
+                    success:function(result){
+                        tableElement.deleteRow(index);
+                    },
+                    error:function (xhr,status,error){
+                        console.log (error)
+                    }
+                })               
+            }
+            function updateTableRow(wine){
+                rowElement = document.getElementById(wine.id)
+                rowElement.cells[1]=firstChild.textContent = wine.name
+                rowElement.cells[2]=firstChild.textContent = wine.vintage
+                rowElement.cells[3]=firstChild.textContent = wine.country
+                rowElement.cells[4]=firstChild.textContent = wine.grape
+                rowElement.cells[5]=firstChild.textContent = wine.region
+                rowElement.cells[6]=firstChild.textContent = wine.colour
+                
+            }
+            function getWineFromForm(){
+                var form = document.getElementById('createUpdateForm')
+                var wine = {}
+                wine.id = form.querySelector('input[name="id"]').value
+                wine.name = form.querySelector('input[name="name"]').value
+                wine.vintage = form.querySelector('input[name="vintage"]').value
+                wine.country = form.querySelector('input[name="country"]').value
+                wine.grape = form.querySelector('input[name="grape"]').value
+                wine.region = form.querySelector('input[name="region"]').value
+                wine.colour = form.querySelector('input[name="colour"]').value
+
+                return wine
+            }
+
+            function showDisplay(){
+                document.getElementById('display').style.display="block"
+                document.getElementById('create-update').style.display="none"
+
+            }
+
+            function populateTable(){
+                //ajax getAll
+                $.ajax({
+                    url:'http://127.0.0.1:5000/wine',
+                    method:"GET",
+                    dataType:'JSON',
+                    success:function(result){
+                        for (wine of result){
+                            addWineToTable(wine)
+                        }
+                    },
+                    error:function (xhr,status,error){
+                        console.log ("error "+error +" code:"+status)
+                    }
+                })
+                wine = {
+                    id:123,
+                    name:"chateau_margaux",
+                    vintage:1962,
+                    country:"france",
+                    grape:"cabernet_sauvignon/merlot",
+                    region:"bordeaux",
+                    colour:"red"
+                }
+                addWineToTable(wine)
+            }
+            function addWineToTable(wine){
+                //console.log("working so far")
+                tableElem = document.getElementById("wineTable")
+                rowElem = tableElem.insertRow(-1)
+                rowElem.setAttribute("id",wine.id)
+                cell1 = rowElem.insertCell(0)
+                cell1.innerHTML = wine.id
+                cell2 = rowElem.insertCell(1)
+                cell2.innerHTML = wine.name
+                cell3 = rowElem.insertCell(2)
+                cell3.innerHTML = wine.vintage
+                cell4 = rowElem.insertCell(3)
+                cell4.innerHTML = wine.country
+                cell5 = rowElem.insertCell(4)
+                cell5.innerHTML = wine.grape
+                cell6 = rowElem.insertCell(5)
+                cell6.innerHTML = wine.region
+                cell7 = rowElem.insertCell(6)
+                cell7.innerHTML = wine.colour
+                cell8 = rowElem.insertCell(7)
+                cell8.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+                cell9 = rowElem.insertCell(8)
+                cell9.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
+            }
+            populateTable()
+        </script>
+    </body>
+</html>
