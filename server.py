@@ -1,6 +1,5 @@
 from flask import Flask, url_for, request, redirect, abort, jsonify
-
-from zWineDAO import wineDAO
+from WineDao import wineDao
 
 app = Flask(__name__, static_url_path='', static_folder='static_pages')
 
@@ -11,14 +10,14 @@ def index():
 # get all
 @app.route('/wine')
 def getAll():
-    return jsonify(wineDAO.getAll())
+    return jsonify(wineDao.getAll())
 
 
 # find by ID
 @app.route('/wine/<int:id>')
 def findById(id):
   
-    return jsonify(wineDAO.findByID(id))
+    return jsonify(wineDao.findByID(id))
 
 # create
 @app.route('/wine', methods=['POST'])
@@ -35,12 +34,14 @@ def create():
         "region": request.json["region"],
         "colour": request.json["colour"]
     }
-    return jsonify(wineDAO.create(wine))
+    return jsonify(wineDao.create(wine))
+
+    return "served by Create"
 
 # update
 @app.route('/wine/<int:id>', methods=['PUT'])
 def update(id):
-    foundWine = wineDAO.findByID(id)
+    foundWine = wineDao.findByID(id)
     print(foundWine)
     if foundWine == {}:
         return jsonify([]), 404
@@ -59,14 +60,14 @@ def update(id):
         currentWine['region'] = request.json["region"]
     if 'colour' in request.json:
         currentWine['colour'] = request.json["colour"]
-    wineDAO.update(currentWine)
+    wineDao.update(currentWine)
 
     return jsonify(currentWine)
 
 # delete
 @app.route('/wine/<int:id>', methods=['DELETE'])
 def delete(id):
-    wineDAO.delete(id)
+    wineDao.delete(id)
 
     return jsonify({"done": True})
 

@@ -1,7 +1,8 @@
 import mysql.connector
+from mysql.connector import cursor
 
-class WineDAO:
-    db=""
+class WineDao:
+    db = ""
     def __init__(self):
         self.db = mysql.connector.connect(
             host = "localhost",
@@ -33,21 +34,12 @@ class WineDAO:
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
-        print(results)
+        # print(results)
         for result in results:
             resultAsDict = self.convertToDict(result)
             returnArray.append(resultAsDict)
         
         return returnArray
-
-    def convertToDict(self, result):
-        colNames = ['id', 'name', 'vintage', 'country', 'grape', 'region', 'colour']
-        wine = {}
-        if result:
-            for i, colName in enumerate(colNames):
-                value = result[i]
-                wine[colName] = value
-        return wine
 
     def findByID(self, id):
         cursor = self.db.cursor()
@@ -59,15 +51,15 @@ class WineDAO:
 
     def update(self, wine):
         cursor = self.db.cursor()
-        sql = "update wine set id = %s, name = %s, vintage = %s, country = %s, grape = %s, region = %s, colour = %s"
+        sql = "update wine set name = %s, vintage = %s, country = %s, grape = %s, region = %s, colour = %s where id = %s"
         values = [
-            wine['id'],
             wine['name'],
             wine['vintage'],
             wine['country'],
             wine['grape'],
             wine['region'],
-            wine['colour']
+            wine['colour'],
+            wine['id'],
         ]
         cursor.execute(sql, values)
         self.db.commit()
@@ -80,5 +72,14 @@ class WineDAO:
         cursor.execute(sql, values)
        
         return {}
+
+    def convertToDict(self, result):
+        colNames = ['id', 'name', 'vintage', 'country', 'grape', 'region', 'colour']
+        wine = {}
+        if result:
+            for i, colName in enumerate(colNames):
+                value = result[i]
+                wine[colName] = value
+        return wine   
     
-wineDAO = WineDAO()
+wineDao = WineDao()
