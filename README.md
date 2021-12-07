@@ -4,6 +4,8 @@
 
 ___
 
+![wine](/images/wine2.jpg)
+
 ### Daddy's Wine Wishlist!
 
 ## References

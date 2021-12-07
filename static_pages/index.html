@@ -24,14 +24,20 @@
             th:nth-child(even),td:nth-child(even) {
                 background-color: rgba(212, 178, 150, 0.4);
             }
+
+            table.center {
+                margin-left: auto; 
+                margin-right: auto;
+            }
         </style>
     </head>
     
     <body style="background-color:ivory;">
         <div id="create-update" style="display:none">
-            <h2>Add/Update</h2>
-
-            <table id="createUpdateForm">
+            <br>
+            <h3 style="font-family:verdana;text-align:center;color:maroon;"><i>Add/Update</i></h3>
+            <br>
+            <table id="createUpdateForm" class="center">
                 <tr>
                     <td>ID</td>
                     <td><input type="number" name="ID" id="idInput"></td>
@@ -67,7 +73,8 @@
         </div>
 
         <div id="display">
-            <h1 style="font-family:verdana;text-align:center;color:maroon;"><i>Daddy's Wine Wishlist!</i></h1>
+            <br>
+            <h1 style="font-family:verdana;text-align:center;color:maroon;"><i>Daddy's wine wishlist!</i></h1><br>
             <img src="https://cf.ltkcdn.net/wine/images/orig/200786-1697x1131-red-wine.jpg" alt="wine_picture" style="border:5px solid black;width:40%;">
             <br>
             <br>
@@ -75,10 +82,8 @@
             <table id="wineTable" class="table" style="width:100%">
                 <tr>
                     <th>ID</th><th>name</th><th>producer</th><th>vintage</th><th>country_region</th><th>grape_style</th><th></th><th></th>
-                </tr>
-                
+                </tr>            
             </table>
-
         </div>
 
         <script>
@@ -88,8 +93,8 @@
                 document.getElementById('create-button').style.display = "inline"
                 document.getElementById('create-update').style.display = "block"
                 document.getElementById('back-button').style.display = "inline"
-
             }
+
             function showUpdate(thisElem){
                 var rowElement = thisElem.parentNode.parentNode;
                 wine = readWineFromRow(rowElement)
@@ -100,8 +105,8 @@
                 document.getElementById('create-button').style.display = "none"
                 document.getElementById('create-update').style.display = "block"
                 document.getElementById('back-button').style.display = "inline"
-
             }
+
             function readWineFromRow(rowElement){
                 wine = {}
                 wine.ID = rowElement.getAttribute("id");
@@ -111,13 +116,12 @@
                 wine.country_region = rowElement.cells[4].firstChild.textContent
                 wine.grape_style = rowElement.cells[5].firstChild.textContent
 
-                return wine
-                
+                return wine           
             }
+
             function populateForm(wine){
                 var form = document.getElementById('createUpdateForm')
-
-                
+            
                 form.querySelector('input[name="ID"]').value = wine.ID
                 form.querySelector('input[name="ID"]').disabled=true
                 
@@ -127,9 +131,9 @@
                 form.querySelector('input[name="country_region"]').value = wine.country_region 
                 form.querySelector('input[name="grape_style"]').value = wine.grape_style      
             }
+
             function clearForm() {
                     var form = document.getElementById('createUpdateForm')
-
 
                     form.querySelector('input[name="ID"]').value = ''
                     form.querySelector('input[name="ID"]').disabled = false
@@ -156,18 +160,17 @@
                         addWineToTable(wine)
                         showDisplay()
                         clearForm()
-
                     },
                     error:function(xhr,status,error){
                         console.log("error"+error)
                     }
                 })
-               
             }
+
             function doUpdate(){
                 wine = getWineFromForm()
                 updateServer(wine)
-                
+                clearForm()              
             }
 
             function goBack(){
@@ -186,13 +189,13 @@
                         updateTableRow(wine)
                         showDisplay()
                         clearForm()
-
                     },
                     error: function (xhr, status, error) {
                         console.log("error" + error)
                     }
                 })
             }
+
             function doDelete(thisElem){
                 var tableElement = document.getElementById('wineTable');
                 var rowElement = thisElem.parentNode.parentNode;
@@ -208,9 +211,9 @@
                     error:function(xhr,status,error){
                         console.log(error)
                     }
-                })
-                
+                })           
             }
+
             function updateTableRow(wine){
                 rowElement = document.getElementById(wine.ID)
                 rowElement.cells[1].firstChild.textContent = wine.name
@@ -218,30 +221,29 @@
                 rowElement.cells[3].firstChild.textContent = wine.vintage
                 rowElement.cells[4].firstChild.textContent = wine.country_region
                 rowElement.cells[5].firstChild.textContent = wine.grape_style
-                //console.log("updating table")
             }
+
             function getWineFromForm(){
                 var form = document.getElementById('createUpdateForm')
-
                 var wine = {}
+
                 wine.ID = form.querySelector('input[name="ID"]').value
                 wine.name = form.querySelector('input[name="name"]').value
                 wine.producer = form.querySelector('input[name="producer"]').value
                 wine.vintage = form.querySelector('input[name="vintage"]').value
                 wine.country_region = form.querySelector('input[name="country_region"]').value
                 wine.grape_style = form.querySelector('input[name="grape_style"]').value
-                //console.log(wine)
-                 return wine
+                
+                return wine
             }
-             function showDisplay() {
-                    document.getElementById('display').style.display = "block"
-                    document.getElementById('create-update').style.display = "none"
 
-                }
+            function showDisplay() {
+                document.getElementById('display').style.display = "block"
+                document.getElementById('create-update').style.display = "none"
+            }
 
             function populateTable(){
-                //ajax getAll
-               $.ajax({
+                $.ajax({
                    url:'http://127.0.0.1:5000/wines',
                    method:'GET',
                    datatype:'JSON',
@@ -253,12 +255,10 @@
                    error:function (xhr,status,error){
                        console.log ("error "+error +" code:"+status)
                    }
-
-               })
-               
+               })          
             }
+
             function addWineToTable(wine){
-                //console.log("working so far")
                 tableElem = document.getElementById("wineTable")
                 rowElem = tableElem.insertRow(-1)
                 rowElem.setAttribute("id", wine.ID)
@@ -278,11 +278,8 @@
                 cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
                 cell6 = rowElem.insertCell(7)
                 cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
-                // cell7 = rowElem.insertCell(8)
-                // cell7.innerHTML = "<form action='https://www.w3docs.com/' method='get' target='_blank'><button type='submit'>Click me</button></form>"
                 }
-                // cell7.innerHTML = "<form action='https://www.w3docs.com/' method='get' target='_blank'><button type='submit'>Click me</button></form>"
-            populateTable()
+                populateTable()
         </script>
     </body>
 </html>
