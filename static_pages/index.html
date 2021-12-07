@@ -1,14 +1,36 @@
+<!DOCTYPE html>
 <html>
     <head>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+        <title>Daddy's Wine Wishlist!</title>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        
+        <style>
+            img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            tr:nth-child(even) {
+                background-color: rgba(212, 178, 150, 0.4);
+            }
+            th:nth-child(even),td:nth-child(even) {
+                background-color: rgba(212, 178, 150, 0.4);
+            }
+        </style>
     </head>
-    <body>
+    
+    <body style="background-color:ivory;">
         <div id="create-update" style="display:none">
-            <h2>create-edit</h2>
+            <h2>Add/Update</h2>
+
             <table id="createUpdateForm">
                 <tr>
                     <td>ID</td>
@@ -37,15 +59,20 @@
                 <tr>
                     <td></td><td>
                         <button id="create-button" onclick="doCreate()">Create</button>     
-                        <button id="update-button" onclick="doUpdate()">update</button>
+                        <button id="update-button" onclick="doUpdate()">Update</button>
+                        <button id="back-button" onclick="goBack()">Back</button>
                     </td>
                 </tr>
             </table>
         </div>
+
         <div id="display">
-            <h2>Wines</h2>
-            <button onClick="showCreate()">Create</button>
-            <table id="wineTable" class="table">
+            <h1 style="font-family:verdana;text-align:center;color:maroon;"><i>Daddy's Wine Wishlist!</i></h1>
+            <img src="https://cf.ltkcdn.net/wine/images/orig/200786-1697x1131-red-wine.jpg" alt="wine_picture" style="border:5px solid black;width:40%;">
+            <br>
+            <br>
+            <button onClick="showCreate()">Add New Wine</button>
+            <table id="wineTable" class="table" style="width:100%">
                 <tr>
                     <th>ID</th><th>name</th><th>producer</th><th>vintage</th><th>country_region</th><th>grape_style</th><th></th><th></th>
                 </tr>
@@ -58,8 +85,9 @@
             function showCreate(){
                 document.getElementById('display').style.display = "none"
                 document.getElementById('update-button').style.display = "none"
-                document.getElementById('create-button').style.display = "block"
+                document.getElementById('create-button').style.display = "inline"
                 document.getElementById('create-update').style.display = "block"
+                document.getElementById('back-button').style.display = "inline"
 
             }
             function showUpdate(thisElem){
@@ -68,9 +96,10 @@
                 populateForm(wine)
 
                 document.getElementById('display').style.display = "none"
-                document.getElementById('update-button').style.display = "block"
+                document.getElementById('update-button').style.display = "inline"
                 document.getElementById('create-button').style.display = "none"
                 document.getElementById('create-update').style.display = "block"
+                document.getElementById('back-button').style.display = "inline"
 
             }
             function readWineFromRow(rowElement){
@@ -140,6 +169,11 @@
                 updateServer(wine)
                 
             }
+
+            function goBack(){
+                showDisplay()
+            }
+
             function updateServer(wine){
                $.ajax({
                     url: "/wines/"+wine.ID,
@@ -243,8 +277,11 @@
                 cell5 = rowElem.insertCell(6)
                 cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
                 cell6 = rowElem.insertCell(7)
-                cell6.innerHTML = '<button onclick="doDelete(this)">delete</button>'
-                 }
+                cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
+                // cell7 = rowElem.insertCell(8)
+                // cell7.innerHTML = "<form action='https://www.w3docs.com/' method='get' target='_blank'><button type='submit'>Click me</button></form>"
+                }
+                // cell7.innerHTML = "<form action='https://www.w3docs.com/' method='get' target='_blank'><button type='submit'>Click me</button></form>"
             populateTable()
         </script>
     </body>

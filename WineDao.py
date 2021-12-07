@@ -69,7 +69,7 @@ class WineDao:
        sql = 'delete from wines where ID = %s'
        values = [ID]
        cursor.execute(sql, values)
-       
+    #    self.db.commit()
        return {}
 
     def convertToDict(self, result):
