@@ -3,75 +3,80 @@ from WineDao import wineDao
 
 app = Flask(__name__, static_url_path='', static_folder='static_pages')
 
+
 @app.route('/')
 def index():
     return "hello"
+#get all
 
-# get all
-@app.route('/wine')
+
+@app.route('/wines')
 def getAll():
     return jsonify(wineDao.getAll())
+# find By id
 
 
-# find by ID
-@app.route('/wine/<int:id>')
-def findById(id):
-  
-    return jsonify(wineDao.findByID(id))
+@app.route('/wines/<int:ID>')
+def findById(ID):
+    return jsonify(wineDao.findById(ID))
 
 # create
-@app.route('/wine', methods=['POST'])
+# curl -X POST -d "{\"Title\":\"test\", \"Author\":\"some guy\", \"Price\":123}" http://127.0.0.1:5000/wines
+
+
+@app.route('/wines', methods=['POST'])
 def create():
+   
     if not request.json:
         abort(400)
 
     wine = {
-        "id": request.json["id"],
+        "ID": request.json["ID"],
         "name": request.json["name"],
+        "producer": request.json["producer"],
         "vintage": request.json["vintage"],
-        "country": request.json["country"],
-        "grape": request.json["grape"],
-        "region": request.json["region"],
-        "colour": request.json["colour"]
+        "country_region": request.json["country_region"],
+        "grape_style": request.json["grape_style"]
     }
     return jsonify(wineDao.create(wine))
 
-    return "served by Create"
+    return "served by Create "
 
-# update
-@app.route('/wine/<int:id>', methods=['PUT'])
-def update(id):
-    foundWine = wineDao.findByID(id)
-    print(foundWine)
+#update
+# curl -X PUT -d "{\"Title\":\"new Title\", \"Price\":999}" -H "content-type:application/json" http://127.0.0.1:5000/wines/1
+
+
+@app.route('/wines/<int:ID>', methods=['PUT'])
+def update(ID):
+    foundWine=wineDao.findById(ID)
+    print (foundWine)
     if foundWine == {}:
-        return jsonify([]), 404
+        return jsonify({}), 404
     currentWine = foundWine
-    if 'id' in request.json:
-        currentWine['id'] = request.json["id"]
     if 'name' in request.json:
-        currentWine['name'] = request.json["name"]
+        currentWine['name'] = request.json['name']
+    if 'producer' in request.json:
+        currentWine['producer'] = request.json['producer']
     if 'vintage' in request.json:
-        currentWine['vintage'] = request.json["vintage"]
-    if 'country' in request.json:
-        currentWine['country'] = request.json["country"]
-    if 'grape' in request.json:
-        currentWine['grape'] = request.json["grape"]
-    if 'region' in request.json:
-        currentWine['region'] = request.json["region"]
-    if 'colour' in request.json:
-        currentWine['colour'] = request.json["colour"]
+        currentWine['vintage'] = request.json['vintage']
+    if 'country/region' in request.json:
+        currentWine['country_region'] = request.json['country_region']
+    if 'grape/style' in request.json:
+        currentWine['grape_style'] = request.json['grape_style']
     wineDao.update(currentWine)
 
     return jsonify(currentWine)
 
-# delete
-@app.route('/wine/<int:id>', methods=['DELETE'])
-def delete(id):
-    wineDao.delete(id)
+#delete
+# curl -X DELETE http://127.0.0.1:5000/wines/1
+
+
+@app.route('/wines/<int:ID>', methods=['DELETE'])
+def delete(ID):
+    wineDao.delete(ID)
 
     return jsonify({"done": True})
 
+
 if __name__ == "__main__":
     app.run(debug=True)
-
-# curl -X POST -d "{\"id\":1, \"name\":\"opus_one\", \"vintage\":1979, \"country\":\"USA\", \"grape\":\"cabernet_sauvignon\", \"region\":\"california\", \"colour\":\"red\"}" -H Content-Type:application/json http://127.0.0.1:5000/wine 

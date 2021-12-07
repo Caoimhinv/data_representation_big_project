@@ -1,28 +1,27 @@
 import mysql.connector
 from mysql.connector import cursor
+import dbConfig as cfg
 
 class WineDao:
     db = ""
     def __init__(self):
         self.db = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "Francie3",
-            database = "wineCellar"
+            host = cfg.mysql['host'],
+            user = cfg.mysql['user'],
+            password = cfg.mysql['password'],
+            database = cfg.mysql['database']
         )
-        # print("connection made")
 
     def create(self, wine):
         cursor = self.db.cursor()
-        sql = "insert into wine (id, name, vintage, country, grape, region, colour) values (%s, %s, %s, %s, %s, %s, %s)"
+        sql = "insert into wines (ID, name, producer, vintage, country_region, grape_style) values (%s,%s,%s,%s,%s,%s)"
         values = [
-            wine['id'],
+            wine['ID'],
             wine['name'],
+            wine['producer'],
             wine['vintage'],
-            wine['country'],
-            wine['grape'],
-            wine['region'],
-            wine['colour']
+            wine['country_region'],
+            wine['grape_style']
         ]
         cursor.execute(sql, values)
         self.db.commit()
@@ -30,56 +29,57 @@ class WineDao:
 
     def getAll(self):
         cursor = self.db.cursor()
-        sql = "select * from wine"
+        sql = 'select * from wines'
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
-        # print(results)
+        #print(results)
         for result in results:
             resultAsDict = self.convertToDict(result)
             returnArray.append(resultAsDict)
-        
+
         return returnArray
 
-    def findByID(self, id):
+    def findById(self, ID):
         cursor = self.db.cursor()
-        sql = "select * from wine where id = %s"
-        values = [ id ]
+        sql = 'select * from wines where ID = %s'
+        values = [ ID ]
         cursor.execute(sql, values)
         result = cursor.fetchone()
         return self.convertToDict(result)
+        
 
     def update(self, wine):
-        cursor = self.db.cursor()
-        sql = "update wine set name = %s, vintage = %s, country = %s, grape = %s, region = %s, colour = %s where id = %s"
-        values = [
+       cursor = self.db.cursor()
+       sql = "update wines set name = %s, producer = %s, vintage = %s,  country_region = %s, grape_style = %s where ID = %s"
+       values = [
             wine['name'],
+            wine['producer'],
             wine['vintage'],
-            wine['country'],
-            wine['grape'],
-            wine['region'],
-            wine['colour'],
-            wine['id'],
+            wine['country_region'],
+            wine['grape_style'],
+            wine['ID'],
         ]
-        cursor.execute(sql, values)
-        self.db.commit()
-        return wine
+       cursor.execute(sql, values)
+       self.db.commit()
+       return wine
 
-    def delete(self, id):
-        cursor = self.db.cursor()
-        sql = "delete from wine where id = %s"
-        values = [ id ]
-        cursor.execute(sql, values)
+    def delete(self, ID):
+       cursor = self.db.cursor()
+       sql = 'delete from wines where ID = %s'
+       values = [ID]
+       cursor.execute(sql, values)
        
-        return {}
+       return {}
 
     def convertToDict(self, result):
-        colNames = ['id', 'name', 'vintage', 'country', 'grape', 'region', 'colour']
+        colnames = ['ID','name', 'producer', 'vintage', 'country_region', 'grape_style']
         wine = {}
+
         if result:
-            for i, colName in enumerate(colNames):
+            for i , colName in enumerate(colnames):
                 value = result[i]
                 wine[colName] = value
-        return wine   
-    
+        return wine
+
 wineDao = WineDao()
