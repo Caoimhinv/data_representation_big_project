@@ -1,0 +1,10 @@
+Click
+Flask
+itsdangerous
+Jinja2
+MarkupSafe
+mysql-connector-python
+protobuf
+six
+Werkzeug
+pip_freeze

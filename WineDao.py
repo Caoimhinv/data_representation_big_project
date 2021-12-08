@@ -14,9 +14,9 @@ class WineDao:
 
     def create(self, wine):
         cursor = self.db.cursor()
-        sql = "insert into wines (ID, name, producer, vintage, country_region, grape_style) values (%s,%s,%s,%s,%s,%s)"
+        sql = "insert into wines2 (name, producer, vintage, country_region, grape_style) values (%s,%s,%s,%s,%s)"
         values = [
-            wine['ID'],
+            # wine['ID'],
             wine['name'],
             wine['producer'],
             wine['vintage'],
@@ -29,7 +29,7 @@ class WineDao:
 
     def getAll(self):
         cursor = self.db.cursor()
-        sql = 'select * from wines'
+        sql = 'select * from wines2'
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
@@ -42,7 +42,7 @@ class WineDao:
 
     def findById(self, ID):
         cursor = self.db.cursor()
-        sql = 'select * from wines where ID = %s'
+        sql = 'select * from wines2 where ID = %s'
         values = [ ID ]
         cursor.execute(sql, values)
         result = cursor.fetchone()
@@ -51,7 +51,7 @@ class WineDao:
 
     def update(self, wine):
        cursor = self.db.cursor()
-       sql = "update wines set name = %s, producer = %s, vintage = %s,  country_region = %s, grape_style = %s where ID = %s"
+       sql = "update wines2 set name = %s, producer = %s, vintage = %s,  country_region = %s, grape_style = %s where ID = %s"
        values = [
             wine['name'],
             wine['producer'],
@@ -66,7 +66,7 @@ class WineDao:
 
     def delete(self, ID):
        cursor = self.db.cursor()
-       sql = 'delete from wines where ID = %s'
+       sql = 'delete from wines2 where ID = %s'
        values = [ID]
        cursor.execute(sql, values)
     #    self.db.commit()

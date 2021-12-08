@@ -31,7 +31,7 @@ def create():
         abort(400)
 
     wine = {
-        "ID": request.json["ID"],
+        # "ID": request.json["ID"],
         "name": request.json["name"],
         "producer": request.json["producer"],
         "vintage": request.json["vintage"],

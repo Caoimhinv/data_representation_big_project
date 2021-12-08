@@ -40,7 +40,7 @@
             <table id="createUpdateForm" class="center">
                 <tr>
                     <td>ID</td>
-                    <td><input type="number" name="ID" id="idInput"></td>
+                    <td><input type="hidden" name="ID" id="idInput"></td>
                 </tr>
                 <tr>
                     <td>name</td>
@@ -178,7 +178,7 @@
             }
 
             function updateServer(wine){
-               $.ajax({
+                $.ajax({
                     url: "/wines/"+wine.ID,
                     data: JSON.stringify(wine),
                     method: "PUT",
@@ -243,19 +243,20 @@
             }
 
             function populateTable(){
+                host = window.location.origin
                 $.ajax({
-                   url:'http://127.0.0.1:5000/wines',
-                   method:'GET',
-                   datatype:'JSON',
-                   success:function(results){
+                    url:host+'/wines',
+                    method:'GET',
+                    datatype:'JSON',
+                    success:function(results){
                         for (wine of results){
-                             addWineToTable(wine)
+                              addWineToTable(wine)
                         }
-                   },
-                   error:function (xhr,status,error){
-                       console.log ("error "+error +" code:"+status)
-                   }
-               })          
+                    },
+                    error:function (xhr,status,error){
+                        console.log ("error "+error +" code:"+status)
+                    }
+                })          
             }
 
             function addWineToTable(wine){
@@ -270,14 +271,14 @@
                 cell3.innerHTML = wine.producer
                 cell4 = rowElem.insertCell(3)
                 cell4.innerHTML = wine.vintage
-                cell4 = rowElem.insertCell(4)
-                cell4.innerHTML = wine.country_region
-                cell4 = rowElem.insertCell(5)
-                cell4.innerHTML = wine.grape_style
-                cell5 = rowElem.insertCell(6)
-                cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
-                cell6 = rowElem.insertCell(7)
-                cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
+                cell5 = rowElem.insertCell(4)
+                cell5.innerHTML = wine.country_region
+                cell6 = rowElem.insertCell(5)
+                cell6.innerHTML = wine.grape_style
+                cell7 = rowElem.insertCell(6)
+                cell7.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+                cell8 = rowElem.insertCell(7)
+                cell8.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
                 }
                 populateTable()
         </script>
