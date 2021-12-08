@@ -1,3 +1,7 @@
+
+# other version with pooling in different folder. 
+# Still not saving updates for some reason?
+
 import mysql.connector
 from mysql.connector import cursor
 import dbConfig as cfg
