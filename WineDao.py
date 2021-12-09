@@ -99,4 +99,30 @@ class WineDao:
                 wine[colName] = value
         return wine
 
+    def checkUser(self, email, password):
+        cursor = self.getCursor()
+        sql="SELECT * FROM users where email = %s and password=%s"
+        values = (email, password)
+        cursor.execute(sql, values)
+            # Fetch one record and return result
+        account = cursor.fetchone()
+        cursor.close()
+        return self.convertToDictionary2(account)
+
+            #result = cursor.fetchone()
+            #ßprint(result)
+        print("Hello Caoimhin")
+
+    def convertToDictionary2(self, account):
+        colnames=["ID", "name", "email", "password"]
+        print(colnames)
+        item = {}
+
+        if account:
+            for i, colname in enumerate(colnames):
+                print(colnames)
+                value = account[i]
+                item[colname] = value
+        return item
+
 wineDao = WineDao()

@@ -1,98 +1,80 @@
-# from flask import Flask, session, url_for, request, redirect, abort, jsonify
-# from WineDao import wineDao
+from flask import Flask, url_for, request, redirect, abort, jsonify, render_template
+from WineDao import wineDao
 
-# app = Flask(__name__, static_url_path='', static_folder='static_pages')
+app = Flask(__name__, static_url_path='', static_folder='static_pages')
 
-# app.secret_key = 'WINEesjrhcb755bdhb13463'
+# from - https://realpython.com/introduction-to-flask-part-2-creating-a-login-page/
+# Route for handling the login page logic
+@app.route('/login', methods=['GET','POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['email'] != '' or request.form['password'] != '':
+            email = request.form['email']
+            password = request.form['password']
+            foundUser = wineDao.checkUser(email, password)
+            if not foundUser:
+                error = 'Invalid Credentials. Please try again.'
+            else:
+                return redirect(url_for('welcome'))
+        else:
+            return error
+    return render_template('login.html', error=error)
 
-# @app.route('/')
-# def home():
-#     if not 'username' in session:
-#         return redirect(url_for('login'))
-    
-#     return 'Welcome ' + session['username'] +\
-#         '<br><br><a href="'+url_for('getData')+'">Continue to app</a>' +\
-#         '<br><a href="'+url_for('logout')+'">Logout</a>'
- 
-# @app.route('/login')
-# def login():
-#     return '<h1> login</h1> '+\
-#         '<button>'+\
-#             '<a href="'+url_for('proccess_login')+'">' +\
-#                 'login' +\
-#             '</a>' +\
-#         '</button>'
+@app.route('/')
+def home():
+    return "hello"
 
-# @app.route('/processlogin')
-# def proccess_login():
-#     #check credentials
-#     #if bad redirect to login page again
+@app.route('/welcome', methods=['GET', 'POST'])
+def welcome():
+    return render_template('welcome.html')  # render a template
 
-#     #else
-#     session['username']="Wine fan!"
-#     return redirect(url_for('home'))
+#get all
+@app.route('/wines')
+def getAll():
+    return jsonify(wineDao.getAll())
 
-# @app.route('/logout')
-# def logout():
-#     session.pop('username', None)
-#     return redirect(url_for('home'))
+# find By id
+@app.route('/wines/<int:ID>')
+def findById(ID):
+    return jsonify(wineDao.findById(ID))
 
-# @app.route('/daddyswine.html')
-# def getData():
-#     if not 'username' in session:
-#         abort(401)
-#     return '{"data":"all here"}'
+# create
+@app.route('/wines', methods=['POST'])
+def create():
+    if not request.json:
+        abort(400)
 
-# @app.route('/')
-# def index():
-#     return "hello"
+    wine = {
+        "nameProducer": request.json["nameProducer"],
+        "vintage": request.json["vintage"],
+        "regionCountry": request.json["regionCountry"],
+    }
+    return jsonify(wineDao.create(wine))
+    return "served by Create "
 
-# #get all
-# @app.route('/wines')
-# def getAll():
-#     return jsonify(wineDao.getAll())
+# update
+@app.route('/wines/<int:ID>', methods=['PUT'])
+def update(ID):
+    foundWine = wineDao.findById(ID)
+    print (foundWine)
+    if foundWine == {}:
+        return jsonify({}), 404
+    currentWine = foundWine
+    if 'nameProducer' in request.json:
+        currentWine['nameProducer'] = request.json['nameProducer']
+    if 'vintage' in request.json:
+        currentWine['vintage'] = request.json['vintage']
+    if 'regionCountry' in request.json:
+        currentWine['regionCountry'] = request.json['regionCountry']
+    wineDao.update(currentWine)
+    return jsonify(currentWine)
 
-# # find By id
-# @app.route('/wines/<int:ID>')
-# def findById(ID):
-#     return jsonify(wineDao.findById(ID))
+#delete
+@app.route('/wines/<int:ID>', methods=['DELETE'])
+def delete(ID):
+    wineDao.delete(ID)
+    return jsonify({"done": True})
 
-# # create
-# @app.route('/wines', methods=['POST'])
-# def create():
-#     if not request.json:
-#         abort(400)
-
-#     wine = {
-#         "nameProducer": request.json["nameProducer"],
-#         "vintage": request.json["vintage"],
-#         "regionCountry": request.json["regionCountry"],
-#     }
-#     return jsonify(wineDao.create(wine))
-#     return "served by Create "
-
-# # update
-# @app.route('/wines/<int:ID>', methods=['PUT'])
-# def update(ID):
-#     foundWine = wineDao.findById(ID)
-#     print (foundWine)
-#     if foundWine == {}:
-#         return jsonify({}), 404
-#     currentWine = foundWine
-#     if 'nameProducer' in request.json:
-#         currentWine['nameProducer'] = request.json['nameProducer']
-#     if 'vintage' in request.json:
-#         currentWine['vintage'] = request.json['vintage']
-#     if 'regionCountry' in request.json:
-#         currentWine['regionCountry'] = request.json['regionCountry']
-#     wineDao.update(currentWine)
-#     return jsonify(currentWine)
-
-# #delete
-# @app.route('/wines/<int:ID>', methods=['DELETE'])
-# def delete(ID):
-#     wineDao.delete(ID)
-#     return jsonify({"done": True})
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
