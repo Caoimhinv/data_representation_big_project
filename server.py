@@ -1,8 +1,8 @@
 from flask import Flask, session, url_for, request, redirect, abort, jsonify
-
 from WineDao import wineDao
 
 app = Flask(__name__, static_url_path='', static_folder='static_pages')
+
 app.secret_key = 'WINEesjrhcb755bdhb13463'
 
 @app.route('/')
