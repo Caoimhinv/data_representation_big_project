@@ -1,7 +1,47 @@
-from flask import Flask, url_for, request, redirect, abort, jsonify
+from flask import Flask, session, url_for, request, redirect, abort, jsonify
+
 from WineDao import wineDao
 
 app = Flask(__name__, static_url_path='', static_folder='static_pages')
+app.secret_key = 'WINEesjrhcb755bdhb13463'
+
+@app.route('/')
+def home():
+    if not 'username' in session:
+        return redirect(url_for('login'))
+    
+    return 'Welcome ' + session['username'] +\
+        '<br><br><a href="'+url_for('getData')+'">Continue to app</a>' +\
+        '<br><a href="'+url_for('logout')+'">Logout</a>'
+ 
+@app.route('/login')
+def login():
+    return '<h1> login</h1> '+\
+        '<button>'+\
+            '<a href="'+url_for('proccess_login')+'">' +\
+                'login' +\
+            '</a>' +\
+        '</button>'
+
+@app.route('/processlogin')
+def proccess_login():
+    #check credentials
+    #if bad redirect to login page again
+
+    #else
+    session['username']="Wine fan!"
+    return redirect(url_for('home'))
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect(url_for('home'))
+
+@app.route('/daddyswine.html')
+def getData():
+    if not 'username' in session:
+        abort(401)
+    return '{"data":"all here"}'
 
 @app.route('/')
 def index():
