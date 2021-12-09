@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
     <head>
         <title>Daddy's Wine Wishlist!</title>
@@ -24,10 +23,12 @@
             th:nth-child(even),td:nth-child(even) {
                 background-color: rgba(212, 178, 150, 0.4);
             }
-
             table.center {
                 margin-left: auto; 
                 margin-right: auto;
+            }
+            button.ex1 {
+            margin: 1% 5%;
             }
         </style>
     </head>
@@ -43,24 +44,16 @@
                     <td><input type="hidden" name="ID" id="idInput"></td>
                 </tr>
                 <tr>
-                    <td>name</td>
-                    <td><input type="text" name="name"></td>
-                </tr>
-                <tr>
-                    <td>producer</td>
-                    <td><input type="text" name="producer"></td>
+                    <td>Name/Producer</td>
+                    <td><input type="text" name="nameProducer"></td>
                 </tr>
                 <tr>    
-                    <td>vintage</td>
+                    <td>Vintage</td>
                     <td><input type="number" name="vintage"></td>
                 </tr>
                 <tr>    
-                    <td>country/region</td>
-                    <td><input type="text" name="country_region"></td>
-                </tr>
-                <tr>    
-                    <td>grape/style</td>
-                    <td><input type="text" name="grape_style"></td>
+                    <td>Region/Country</td>
+                    <td><input type="text" name="regionCountry"></td>
                 </tr>
                 <tr>
                     <td></td><td>
@@ -78,10 +71,10 @@
             <img src="https://cf.ltkcdn.net/wine/images/orig/200786-1697x1131-red-wine.jpg" alt="wine_picture" style="border:5px solid black;width:40%;">
             <br>
             <br>
-            <button onClick="showCreate()">Add New Wine</button>
-            <table id="wineTable" class="table" style="width:100%">
+            <button class="ex1" onClick="showCreate()">Add New Wine</button>
+            <table id="wineTable" class="center" style="width:90%">
                 <tr>
-                    <th>ID</th><th>name</th><th>producer</th><th>vintage</th><th>country_region</th><th>grape_style</th><th></th><th></th>
+                    <th>ID</th><th>Name/Producer</th><th>Vintage</th><th>Region/Country</th><th>Update</th><th>Delete</th>
                 </tr>            
             </table>
         </div>
@@ -109,41 +102,30 @@
 
             function readWineFromRow(rowElement){
                 wine = {}
-                wine.ID = rowElement.getAttribute("id");
-                wine.name = rowElement.cells[1].firstChild.textContent
-                wine.producer = rowElement.cells[2].firstChild.textContent
-                wine.vintage = rowElement.cells[3].firstChild.textContent
-                wine.country_region = rowElement.cells[4].firstChild.textContent
-                wine.grape_style = rowElement.cells[5].firstChild.textContent
-
+                wine.ID = rowElement.getAttribute("ID");
+                wine.nameProducer = rowElement.cells[1].firstChild.textContent
+                wine.vintage = rowElement.cells[2].firstChild.textContent
+                wine.regionCountry = rowElement.cells[3].firstChild.textContent
                 return wine           
             }
 
             function populateForm(wine){
-                var form = document.getElementById('createUpdateForm')
-            
+                var form = document.getElementById('createUpdateForm')          
                 form.querySelector('input[name="ID"]').value = wine.ID
-                form.querySelector('input[name="ID"]').disabled=true
-                
-                form.querySelector('input[name="name"]').value = wine.name
-                form.querySelector('input[name="producer"]').value = wine.producer
+                form.querySelector('input[name="ID"]').disabled=true               
+                form.querySelector('input[name="nameProducer"]').value = wine.nameProducer
                 form.querySelector('input[name="vintage"]').value = wine.vintage
-                form.querySelector('input[name="country_region"]').value = wine.country_region 
-                form.querySelector('input[name="grape_style"]').value = wine.grape_style      
+                form.querySelector('input[name="regionCountry"]').value = wine.regionCountry    
             }
 
             function clearForm() {
-                    var form = document.getElementById('createUpdateForm')
-
-                    form.querySelector('input[name="ID"]').value = ''
-                    form.querySelector('input[name="ID"]').disabled = false
-
-                    form.querySelector('input[name="name"]').value = ''
-                    form.querySelector('input[name="producer"]').value = ''
-                    form.querySelector('input[name="vintage"]').value = ''
-                    form.querySelector('input[name="country_region"]').value = ''
-                    form.querySelector('input[name="grape_style"]').value = ''
-                }
+                var form = document.getElementById('createUpdateForm')
+                form.querySelector('input[name="ID"]').value = ''
+                form.querySelector('input[name="ID"]').disabled = false
+                form.querySelector('input[name="nameProducer"]').value = ''
+                form.querySelector('input[name="vintage"]').value = ''
+                form.querySelector('input[name="regionCountry"]').value = ''
+            }
 
             function doCreate(){
                 console.log("in doCreate")
@@ -169,7 +151,9 @@
 
             function doUpdate(){
                 wine = getWineFromForm()
+                rowElement = document.getElementById(wine.ID)    
                 updateServer(wine)
+                updateTableRow(rowElement, wine)
                 clearForm()              
             }
 
@@ -200,7 +184,7 @@
                 var tableElement = document.getElementById('wineTable');
                 var rowElement = thisElem.parentNode.parentNode;
                 var index = rowElement.rowIndex;
-                ID = rowElement.getAttribute("id");
+                ID = rowElement.getAttribute("ID");
                 $.ajax({
                     url:"/wines/"+ID,
                     method:"DELETE",
@@ -216,24 +200,18 @@
 
             function updateTableRow(wine){
                 rowElement = document.getElementById(wine.ID)
-                rowElement.cells[1].firstChild.textContent = wine.name
-                rowElement.cells[2].firstChild.textContent = wine.producer
-                rowElement.cells[3].firstChild.textContent = wine.vintage
-                rowElement.cells[4].firstChild.textContent = wine.country_region
-                rowElement.cells[5].firstChild.textContent = wine.grape_style
+                rowElement.cells[1].firstChild.textContent = wine.nameProducer
+                rowElement.cells[2].firstChild.textContent = wine.vintage
+                rowElement.cells[3].firstChild.textContent = wine.regionCountry
             }
 
             function getWineFromForm(){
                 var form = document.getElementById('createUpdateForm')
                 var wine = {}
-
                 wine.ID = form.querySelector('input[name="ID"]').value
-                wine.name = form.querySelector('input[name="name"]').value
-                wine.producer = form.querySelector('input[name="producer"]').value
+                wine.nameProducer = form.querySelector('input[name="nameProducer"]').value
                 wine.vintage = form.querySelector('input[name="vintage"]').value
-                wine.country_region = form.querySelector('input[name="country_region"]').value
-                wine.grape_style = form.querySelector('input[name="grape_style"]').value
-                
+                wine.regionCountry = form.querySelector('input[name="regionCountry"]').value           
                 return wine
             }
 
@@ -262,23 +240,19 @@
             function addWineToTable(wine){
                 tableElem = document.getElementById("wineTable")
                 rowElem = tableElem.insertRow(-1)
-                rowElem.setAttribute("id", wine.ID)
+                rowElem.setAttribute("ID", wine.ID)
                 cell1 = rowElem.insertCell(0)
                 cell1.innerHTML = wine.ID
                 cell2 = rowElem.insertCell(1)
-                cell2.innerHTML = wine.name
+                cell2.innerHTML = wine.nameProducer
                 cell3 = rowElem.insertCell(2)
-                cell3.innerHTML = wine.producer
+                cell3.innerHTML = wine.vintage
                 cell4 = rowElem.insertCell(3)
-                cell4.innerHTML = wine.vintage
+                cell4.innerHTML = wine.regionCountry          
                 cell5 = rowElem.insertCell(4)
-                cell5.innerHTML = wine.country_region
+                cell5.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
                 cell6 = rowElem.insertCell(5)
-                cell6.innerHTML = wine.grape_style
-                cell7 = rowElem.insertCell(6)
-                cell7.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
-                cell8 = rowElem.insertCell(7)
-                cell8.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
+                cell6.innerHTML = '<button onclick="doDelete(this)">Delete</button>'
                 }
                 populateTable()
         </script>
