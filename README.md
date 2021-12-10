@@ -6,29 +6,51 @@ ___
 
 ![wine](/images/wine2.jpg)
 
-### Daddy's Wine Wishlist!
+## Daddy's Wine Wishlist!
 ---
 #### Introduction
 The brief for this project was to write a program that demonstrates that an understanding of creating and consuming
-RESTful APIs. 
+RESTful APIs. I decided to create an application that allows me to store details of wines in a database and interact with them from a web interface. Access to the interface is restricted with the use of a username and password which are stored in a separate table.
+
+---
+
+#### Contents of repositry  
+
+- **images** - folder of images used in the project
+- **static_pages** - folder containing all of the html files:
+    - **daddyswine.html** - main page containing the table
+    - **login.html** - login page (not working!)
+    - **welcome.html** - landing/home page with link to main page
+- **.gitignore** - 
+- **WineDao.py** - DAO (data access object) links the web interface to the database
+- **configTemplate.py** - template for creating config file for user
+- **requirements.txt** - contains details of all packages used
+- **server1.py** - Flask server
+
+---
 
 #### Quickview
+
 ![wine](/images/pythonAnywhere.jpeg)  
-The application can be viewed here with pythonanywhere
+
+The application can be viewed here with pythonanywhere:  
 Login screen (not working!) - https://caoimhinv.pythonanywhere.com/login.html
 Welcome page - https://caoimhinv.pythonanywhere.com/welcome.html
 Main page - https://caoimhinv.pythonanywhere.com/daddyswine.html
 Create function not working!
 
-You can skip the next two steps!
+You can skip the next few steps if you want an easier life!
+
+---
 
 #### Install and run
-You need a python environment – the packages needed are listed in the requirements.txt file. Steps to installation:
+You need to create the environment to run the application on your own machine – the packages needed are listed in the requirements.txt file.  
+Steps to installation:
 1. Download the code from https://github.com/Caoimhinv/data_representation_project
-2. install the necessary packages by running the follopwing code from the terminal (or command line):  
-```pip install -r requirements.txt```
-3. You then need to run MySQL - from Terminal:
-```mysql -u root -p```
+2. install the necessary packages by running the following code from **Terminal** (or the command line):  
+`pip install -r requirements.txt`
+3. You then need to run **MySQL**. From Terminal:  
+`mysql -u root -p`
 4. Create a database and 2 tables to run in tandem with the application. The following SQL code will do that:
 
 ``` SQL
@@ -37,7 +59,7 @@ USE wineCellar;
 CREATE TABLE wines3 (ID int AUTO_INCREMENT, nameProducer varchar(50), vintage int, regionCountry varchar(50), PRIMARY KEY (ID));
 ```  
 
-Populate the table to get going:
+Populate the table with default data:
 
 ``` SQL
 INSERT INTO wines3 (nameProducer, vintage, regionCountry) VALUES ('Chateau Margaux', 1953, 'Bordeaux, France'),('Grange, Penfolds', 1986, 'South Australia');
@@ -53,7 +75,7 @@ CREATE TABLE users (ID int AUTO_INCREMENT, name varchar(50), email varchar(50), 
 INSERT INTO users (name, email, password) VALUES ('Caoimhin', 'caoimhinvallely@gmail.com', 'Francie4');
 ```
 
-5. Create a configuration file entitled dbConfig.py and copy in the code from the template configTemplate.py, replacing the username and password with your own.
+5. Create a configuration file entitled `dbConfig.py` and copy in the code from the template `configTemplate.py`, replacing the username and password with your own.
 
 6. Start the server from the terminal by running `python server.py`
 
@@ -66,10 +88,12 @@ http://localhost:5000/daddyswine.html
 ---
 
 #### Explore
+
 The table will be pre-populated with the default wines added to the database. You can delete or update these, and then add your own wines. Endless hours of fun! 😆
 
 ---
 ## Credits/References
+
 https://developer.mozilla.org/en-US/docs/Web/CSS/background-color
 
 https://www.w3schools.com/jsref/prop_style_display.asp
@@ -82,6 +106,8 @@ https://stackoverflow.com/questions/20137688/login-with-flask-framework
 
 
 ---
+<br>
+
 # END
 
 #### Contact
