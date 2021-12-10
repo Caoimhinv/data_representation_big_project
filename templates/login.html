@@ -1,5 +1,8 @@
 <html>
 <head>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <title>Wine wishlist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -13,14 +16,12 @@
 <body>
     <div class="container">
         <img src="https://media.istockphoto.com/vectors/red-wine-glass-icon-illustration-vector-id1132889797?k=20&m=1132889797&s=612x612&w=0&h=789LAtKiSQynEGPCS_j3nivLwWPkaCgDAYeLeCM6rYI=" alt="Wine_image" style="width:50%;">
-    <div class="col-md-4 offset-md-4">
-       
+    <div class="col-md-4 offset-md-4">      
     <form action="" method="post" id="loginform" >
         <div class="form-group">
             <div id="typed-strings">
                 <h4>Login</h4>
             </div>
-
             <label for="text">Email address</label>
             <input type="email" class="form-control" placeholder="email" name="email" value="{{request.form.email}}">
         </div>

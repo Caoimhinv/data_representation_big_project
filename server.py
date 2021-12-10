@@ -9,70 +9,76 @@ app = Flask(__name__, static_url_path='', static_folder='static_pages')
 # https://stackoverflow.com/questions/20137688/login-with-flask-framework
 
 # ----
-# @app.route('/login', methods=['GET','POST'])
-# def login():
-#     error = None
-#     if request.method == 'POST':
-#         if request.form['email'] != '' or request.form['password'] != '':
-#             email = request.form['email']
-#             password = request.form['password']
-#             foundUser = wineDao.checkUser(email, password)
-#             if not foundUser:
-#                 error = 'Invalid Credentials. Please try again.'
-#             else:
-#                 return redirect(url_for('welcome'))
-#         else:
-#             return error
-#     return render_template('login.html', error=error)
+@app.route('/login', methods=['GET','POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['email'] != '' or request.form['password'] != '':
+            email = request.form['email']
+            password = request.form['password']
+            foundUser = wineDao.checkUser(email, password)
+            if not foundUser:
+                error = 'Invalid Credentials. Please try again.'
+            else:
+                return redirect(url_for('welcome'))
+        else:
+            return error
+    return render_template('login.html', error=error)
 
 # ------
 
-app.secret_key = 'betyacantguessthis1'
-
-@app.route('/')
-def home():
-    if not 'username' in session:
-        return redirect(url_for('login'))
-    return render_template('welcome.html')
-    # return 'Welcome ' + session['username'] +\
-    #     '<br>' +\
-    #     '<button>' +\
-    #         '<a href="'+url_for('welcome')+'">' +\
-    #             'Continue' +\
-    #         '</a>' +\
-    #     '</button>' +\
-    #     '<button>' +\
-    #         '<a href="'+url_for('logout')+'">' +\
-    #             'Logout' +\
-    #         '</a>' +\
-    #     '</button>'
+# app.secret_key = 'betyacantguessthis1'
 
 # @app.route('/')
 # def home():
-#     return 'Hello you!'
+#     if not 'username' in session:
+#         return redirect(url_for('login'))
+#     # return render_template('welcome.html')
+#     return 'Welcome ' + session['username'] +\
+#         '<br>' +\
+#         '<button>' +\
+#             '<a href="'+url_for('welcome')+'">' +\
+#                 'Continue' +\
+#             '</a>' +\
+#         '</button>' +\
+#         '<button>' +\
+#             '<a href="'+url_for('logout')+'">' +\
+#                 'Logout' +\
+#             '</a>' +\
+#         '</button>'
 
-@app.route('/login')
-def login():
-    return '<h1>Login</h1> '+\
-        '<body style="background-color:ivory;">'+\
-        '<button>'+\
-            '<a href="'+url_for('process_login')+'">' +\
-                'Login' +\
+@app.route('/')
+def home():
+    return 'Hello you!' +\
+        '<br>' +\
+        '<button>' +\
+            '<a href="'+url_for('login')+'">' +\
+                'Continue' +\
             '</a>' +\
-        '</button>' +\
-        '</body>' +\
-        '<img src="https://media.istockphoto.com/vectors/red-wine-glass-icon-illustration-vector-id1132889797?k=20&m=1132889797&s=612x612&w=0&h=789LAtKiSQynEGPCS_j3nivLwWPkaCgDAYeLeCM6rYI=" +\
-        alt="Wine_image" align="top" height=300 width=400>'
+        '</button>'
 
-@app.route('/processlogin')
-def process_login():
-    session['username'] = "Wine Person"
-    return redirect(url_for('home'))
+# @app.route('/login')
+# def login():
+#     return '<h1>Login</h1> '+\
+#         '<body style="background-color:ivory;">'+\
+#         '<button>'+\
+#             '<a href="'+url_for('process_login')+'">' +\
+#                 'Login' +\
+#             '</a>' +\
+#         '</button>' +\
+#         '</body>' +\
+#         '<img src="https://media.istockphoto.com/vectors/red-wine-glass-icon-illustration-vector-id1132889797?k=20&m=1132889797&s=612x612&w=0&h=789LAtKiSQynEGPCS_j3nivLwWPkaCgDAYeLeCM6rYI=" +\
+#         alt="Wine_image" align="top" height=300 width=400>'
 
-@app.route('/logout')
-def logout():
-    session.pop('username',None)
-    return redirect(url_for('home'))
+# @app.route('/processlogin')
+# def process_login():
+#     session['username'] = "Wine Person!"
+#     return redirect(url_for('home'))
+
+# @app.route('/logout')
+# def logout():
+#     session.pop('username',None)
+#     return redirect(url_for('home'))
 
 @app.route('/welcome', methods=['GET', 'POST'])
 def welcome():

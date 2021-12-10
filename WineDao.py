@@ -102,7 +102,7 @@ class WineDao:
         cursor.close()
         return self.convertToDictionary2(result)
 
-    def convertToDictionary2(self, account):
+    def convertToDictionary2(self, result):
         colNames=["ID", "name", "email", "password"]
         print(colNames)
         item = {}

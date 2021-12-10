@@ -33,10 +33,9 @@ The brief for this project was to write a program that demonstrates an understan
 ![wine](/images/pythonAnywhere.jpeg)  
 
 The application can be viewed here with pythonanywhere:  
-https://caoimhinv.pythonanywhere.com  
+https://caoimhinv.pythonanywhere.com/login 
 Just follow the prompts.  
-
-You can skip the next few steps if you want an easier life!
+Pythonanywhere seems to be a bit troublesome in that the database doesn't always load! In which case you might want to try the following!
 
 ---
 
@@ -76,10 +75,9 @@ INSERT INTO users (name, email, password) VALUES ('Caoimhin', 'caoimhinvallely@g
 
 6. Start the server from the terminal by running `python server.py`
 
-7. Open your broswer and follow the prompts or view each page with the following URLs:  
-http://localhost:5000/  
+7. Open your broswer and follow the prompts or view each page with the following URLs:   
 http://localhost:5000/login  
-http://localhost:5000/welcome.html  
+http://localhost:5000/welcome  
 http://localhost:5000/daddyswine.html  
 
 ---
