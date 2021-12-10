@@ -8,21 +8,22 @@ app = Flask(__name__, static_url_path='', static_folder='static_pages')
 # https://github.com/RitRa/data-representation-project/blob/master/application.py
 # https://stackoverflow.com/questions/20137688/login-with-flask-framework
 
-@app.route('/login', methods=['GET','POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['email'] != '' or request.form['password'] != '':
-            email = request.form['email']
-            password = request.form['password']
-            foundUser = wineDao.checkUser(email, password)
-            if not foundUser:
-                error = 'Invalid Credentials. Please try again.'
-            else:
-                return redirect(url_for('welcome'))
-        else:
-            return error
-    return render_template('login.html', error=error)
+# ----
+# @app.route('/login', methods=['GET','POST'])
+# def login():
+#     error = None
+#     if request.method == 'POST':
+#         if request.form['email'] != '' or request.form['password'] != '':
+#             email = request.form['email']
+#             password = request.form['password']
+#             foundUser = wineDao.checkUser(email, password)
+#             if not foundUser:
+#                 error = 'Invalid Credentials. Please try again.'
+#             else:
+#                 return redirect(url_for('welcome'))
+#         else:
+#             return error
+#     return render_template('login.html', error=error)
 
 # ------
 # @app.route('/login/', methods=["GET","POST"])
@@ -51,10 +52,52 @@ def login():
 #         #flash(e)
 #         return render_template("login.html", error = error)
 # ---------------
+app.secret_key = 'betyacantguessthis1'
 
 @app.route('/')
 def home():
-    return 'Hello you!'
+    if not 'username' in session:
+        return redirect(url_for('login'))
+    
+    return 'Welcome ' + session['username'] +\
+        '<br>' +\
+        '<button>' +\
+            '<a href="'+url_for('welcome')+'">' +\
+                'Continue' +\
+            '</a>' +\
+        '</button>' +\
+        '<button>' +\
+            '<a href="'+url_for('logout')+'">' +\
+                'Logout' +\
+            '</a>' +\
+        '</button>'
+
+# @app.route('/')
+# def home():
+#     return 'Hello you!'
+
+@app.route('/login')
+def login():
+    return '<h1>Login</h1> '+\
+        '<button>'+\
+            '<a href="'+url_for('proccess_login')+'">' +\
+                'Login' +\
+            '</a>' +\
+        '</button>'
+
+@app.route('/processlogin')
+def proccess_login():
+    #check credentials
+    #if bad redirect to login page again
+    # if session['username'] != "Wine Person"
+    #else
+    session['username'] = "Wine Person"
+    return redirect(url_for('home'))
+
+@app.route('/logout')
+def logout():
+    session.pop('username',None)
+    return redirect(url_for('home'))
 
 @app.route('/welcome', methods=['GET', 'POST'])
 def welcome():

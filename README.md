@@ -17,9 +17,9 @@ RESTful APIs. I decided to create an application that allows me to store details
 #### Contents of repositry  
 
 - **images** - folder of images used in the project
-- **static_pages** - folder containing all of the html files:
+- **static_pages**
     - **daddyswine.html** - main page containing the table
-    - **login.html** - login page (not working!)
+- **templates**
     - **welcome.html** - landing/home page with link to main page
 - **.gitignore** - 
 - **WineDao.py** - DAO (data access object) links the web interface to the database
@@ -79,9 +79,9 @@ INSERT INTO users (name, email, password) VALUES ('Caoimhin', 'caoimhinvallely@g
 
 6. Start the server from the terminal by running `python server.py`
 
-7. Open your broswer and view the pages:  
+7. Open your broswer and follow the prompts or view each page with the following URLs:  
 http://localhost:5000/  
-http://localhost:5000/login.html  
+http://localhost:5000/login  
 http://localhost:5000/welcome.html  
 http://localhost:5000/daddyswine.html  
 
@@ -89,7 +89,7 @@ http://localhost:5000/daddyswine.html
 
 #### Explore
 
-The table will be pre-populated with the default wines added to the database. You can delete or update these, and then add your own wines. Endless hours of fun! 😆
+The first page you arrive at will ask you to login - just click the link. You will be welcomed at the next page and you can click to continue or logout. You then arrive at a landing page where you can click another link to bring you to the main page. The main page table will be pre-populated with the default wines added to the database (if you did that!). You can delete or update these, and then add your own wines. Endless hours of fun! 😆 When you're done you can logout.
 
 ---
 ## Credits/References
