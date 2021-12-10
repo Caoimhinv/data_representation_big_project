@@ -1,71 +1,38 @@
-<!-- from https://realpython.com/introduction-to-flask-part-2-creating-a-login-page/
 <html>
-  <head>
-    <title>WINE - login page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Please login</h1>
-      <br>
-      <form action="" method="post">
-        <input type="text" placeholder="Username" name="username" value="{{request.form.username }}">
-        <input type="password" placeholder="Password" name="password" value="{{request.form.password }}">
-        <input class="btn btn-default" type="submit" value="Login">
-      </form>
-      {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}
-      {% endif %}
-    </div>
-  </body>
-</html> -->
-
 <head>
-  <title>Wine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-      <link rel="stylesheet" href="css/style.css">
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
- 
-   <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-<script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <title>Wine wishlist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            img {
+             display: block;
+             margin-left: auto;
+            margin-right: auto;
+            }
+        </style>
 </head>
 <body>
-  <div class="container">
-  <img src="https://cf.ltkcdn.net/wine/images/orig/200786-1697x1131-red-wine.jpg" alt="Wine photo" class="login-logo">
-  <div class="col-md-4 offset-md-4">
-     
-  <!--  login form -->
-  <form action="" method="post" id="loginform" >
-  <div class="form-group">
-      <div id="typed-strings">
+    <div class="container">
+        <img src="https://media.istockphoto.com/vectors/red-wine-glass-icon-illustration-vector-id1132889797?k=20&m=1132889797&s=612x612&w=0&h=789LAtKiSQynEGPCS_j3nivLwWPkaCgDAYeLeCM6rYI=" alt="Wine_image" style="width:50%;">
+    <div class="col-md-4 offset-md-4">
+       
+    <form action="" method="post" id="loginform" >
+        <div class="form-group">
+            <div id="typed-strings">
+                <h4>Login</h4>
+            </div>
 
-          <h4>Login</h4>
-      </div>
-
-    <label for="text">Email address</label>
-    <input type="email" class="form-control" placeholder="email" name="email" value="{{ request.form.email }}">
-  </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input type="password" class="form-control" placeholder="Password" name="password" value="{{request.form.password}}">
-    <small id="passwordHelp" class="form-text text-muted"></small>
-  </div>
-  <button type="submit" id="submit" value="Login" class="mdc-button mdc-button--unelevated demo-button-shaped mdc-ripple-upgraded" >Submit</button>
-</form>
-   {% if error %}
-      <p class="error"><strong>Error:</strong> {{ error }}
+            <label for="text">Email address</label>
+            <input type="email" class="form-control" placeholder="email" name="email" value="{{request.form.email}}">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" placeholder="Password" name="password" value="{{request.form.password}}">
+            <small id="passwordHelp" class="form-text text-muted"></small>
+        </div>
+        <button type="submit" id="submit" value="Login" class="mdc-button mdc-button--unelevated demo-button-shaped mdc-ripple-upgraded" >Submit</button>
+    </form>
+    {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
     {% endif %}
-
-<!-- end form-->
-</div>
-
-
-</div>
-
-
-
 </body>
 </html>
