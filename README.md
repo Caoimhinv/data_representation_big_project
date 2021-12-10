@@ -9,7 +9,7 @@ ___
 ## Daddy's Wine Wishlist!
 ---
 #### Introduction
-The brief for this project was to write a program that demonstrates an understanding of creating and consuming RESTful APIs. I decided to create an application that allows me to store details of wines in a database and interact with them from a web interface.  
+The brief for this project was to write a program that demonstrates an understanding of creating and consuming RESTful APIs. I decided to create an application that allows me to store details of wines in a database and interact with them from a web interface. There is a second database containing contact details which are used to verify the user at login.
 
 ---
 
@@ -17,9 +17,10 @@ The brief for this project was to write a program that demonstrates an understan
 
 - **images** - folder of images used in the project
 - **static_pages**
-    - **daddyswine.html** - main page containing the table
+    - **daddyswine.html** - main page containing the table and options for CRUD operations
 - **templates**
-    - **welcome.html** - landing/home page with link to main page
+    -**login.html** - html page for loggin in
+    - **welcome.html** - landing/welcome page with link to continue to main page or logout
 - **.gitignore** - list of files/directories to ignore
 - **WineDao.py** - DAO (data access object) links the web interface to the database
 - **configTemplate.py** - template for creating config file for user
@@ -32,8 +33,8 @@ The brief for this project was to write a program that demonstrates an understan
 
 ![wine](/images/pythonAnywhere.jpeg)  
 
-The application can be viewed here with pythonanywhere:  
-https://caoimhinv.pythonanywhere.com/login 
+The application can be viewed here with **pythonanywhere**:  
+https://caoimhinv.pythonanywhere.com/ 
 Just follow the prompts.  
 Pythonanywhere seems to be a bit troublesome in that the database doesn't always load! In which case you might want to try the following!
 
@@ -41,11 +42,12 @@ Pythonanywhere seems to be a bit troublesome in that the database doesn't always
 
 #### Install and run
 You need to create the environment to run the application on your own machine – the packages needed are listed in the requirements.txt file.  
+
 Steps to installation:
 1. Download the code from https://github.com/Caoimhinv/data_representation_project
 2. install the necessary packages by running the following code from **Terminal** (or the command line):  
 `pip install -r requirements.txt`
-3. You then need to run **MySQL**. From Terminal:  
+3. You then need to run **MySQL** (from Terminal):  
 `mysql -u root -p`
 4. Create a database and 2 tables to run in tandem with the application. The following SQL code will do that:
 
@@ -68,14 +70,15 @@ CREATE TABLE users (ID int AUTO_INCREMENT, name varchar(50), email varchar(50), 
 ```
 
 ``` SQL
-INSERT INTO users (name, email, password) VALUES ('Caoimhin', 'caoimhinvallely@gmail.com', 'Francie4');
+INSERT INTO users (name, email, password) VALUES ('admin', 'cadmin@admin.com', 'admin');
 ```
 
 5. Create a configuration file entitled `dbConfig.py` and copy in the code from the template `configTemplate.py`, replacing the username and password with your own.
 
 6. Start the server from the terminal by running `python server.py`
 
-7. Open your broswer and follow the prompts or view each page with the following URLs:   
+7. Open your broswer and follow the prompts or view each page with the following URLs:  
+http://localhost:5000/  
 http://localhost:5000/login  
 http://localhost:5000/welcome  
 http://localhost:5000/daddyswine.html  
@@ -84,7 +87,19 @@ http://localhost:5000/daddyswine.html
 
 #### Explore
 
-The first page you arrive at will ask you to login - just click the link. You will be welcomed at the next page and you can click to continue or logout. You then arrive at a landing page where you can click another link to bring you to the main page. The main page table will be pre-populated with the default wines added to the database (if you did that!). You can delete or update these, and then add your own wines. Endless hours of fun! 😆 When you're done you can logout.
+The first page you arrive at says 'hello' and prompts you to 'continue'. This leads you to the loginpage. The pythonanwhere site login details are:  
+
+```
+username: admin@admin.com
+password: admin
+```
+
+If you're running the application locally, and you populated the `users` table in the `wineCellar` database with the suggested code above, it'll be the same.
+
+If your details are accepted, you will be welcomed at the next page where you can click to continue or logout. You then arrive at the main page. The main page table will be pre-populated with default wines (pythonanywhere) or with the wines you added to the database manually. On either platform you can update or delete these, then add your own wines, and have a glass while you're doing it. Endless hours of fun! 😆 When you're done you can logout.
+
+
+![wineLogo](/images/wineLogo.jpg)
 
 ---
 ## Credits/References
