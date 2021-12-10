@@ -95,7 +95,7 @@ class WineDao:
 
     def checkUser(self, email, password):
         cursor = self.db.cursor()
-        sql="SELECT * FROM users where email = %s and password=%s"
+        sql="SELECT * FROM users where email=%s and password=%s"
         values = (email, password)
         cursor.execute(sql, values)
         result = cursor.fetchone()

@@ -26,51 +26,26 @@ app = Flask(__name__, static_url_path='', static_folder='static_pages')
 #     return render_template('login.html', error=error)
 
 # ------
-# @app.route('/login/', methods=["GET","POST"])
-# def login():
 
-#     error = ''
-#     try:
-	
-#         if request.method == "POST":
-		
-#             attempted_username = request.form['username']
-#             attempted_password = request.form['password']
-
-#             #flash(attempted_username)
-#             #flash(attempted_password)
-
-#             if attempted_username == "admin" and attempted_password == "password":
-#                 return redirect(url_for('welcome'))
-				
-#             else:
-#                 error = "Invalid credentials. Try Again."
-
-#         return render_template("login.html", error = error)
-
-#     except Exception as e:
-#         #flash(e)
-#         return render_template("login.html", error = error)
-# ---------------
 app.secret_key = 'betyacantguessthis1'
 
 @app.route('/')
 def home():
     if not 'username' in session:
         return redirect(url_for('login'))
-    
-    return 'Welcome ' + session['username'] +\
-        '<br>' +\
-        '<button>' +\
-            '<a href="'+url_for('welcome')+'">' +\
-                'Continue' +\
-            '</a>' +\
-        '</button>' +\
-        '<button>' +\
-            '<a href="'+url_for('logout')+'">' +\
-                'Logout' +\
-            '</a>' +\
-        '</button>'
+    return render_template('welcome.html')
+    # return 'Welcome ' + session['username'] +\
+    #     '<br>' +\
+    #     '<button>' +\
+    #         '<a href="'+url_for('welcome')+'">' +\
+    #             'Continue' +\
+    #         '</a>' +\
+    #     '</button>' +\
+    #     '<button>' +\
+    #         '<a href="'+url_for('logout')+'">' +\
+    #             'Logout' +\
+    #         '</a>' +\
+    #     '</button>'
 
 # @app.route('/')
 # def home():
@@ -79,18 +54,18 @@ def home():
 @app.route('/login')
 def login():
     return '<h1>Login</h1> '+\
+        '<body style="background-color:ivory;">'+\
         '<button>'+\
-            '<a href="'+url_for('proccess_login')+'">' +\
+            '<a href="'+url_for('process_login')+'">' +\
                 'Login' +\
             '</a>' +\
-        '</button>'
+        '</button>' +\
+        '</body>' +\
+        '<img src="https://media.istockphoto.com/vectors/red-wine-glass-icon-illustration-vector-id1132889797?k=20&m=1132889797&s=612x612&w=0&h=789LAtKiSQynEGPCS_j3nivLwWPkaCgDAYeLeCM6rYI=" +\
+        alt="Wine_image" align="top" height=300 width=400>'
 
 @app.route('/processlogin')
-def proccess_login():
-    #check credentials
-    #if bad redirect to login page again
-    # if session['username'] != "Wine Person"
-    #else
+def process_login():
     session['username'] = "Wine Person"
     return redirect(url_for('home'))
 
