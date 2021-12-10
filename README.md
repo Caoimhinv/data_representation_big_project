@@ -9,8 +9,7 @@ ___
 ## Daddy's Wine Wishlist!
 ---
 #### Introduction
-The brief for this project was to write a program that demonstrates that an understanding of creating and consuming
-RESTful APIs. I decided to create an application that allows me to store details of wines in a database and interact with them from a web interface. Access to the interface is restricted with the use of a username and password which are stored in a separate table.
+The brief for this project was to write a program that demonstrates an understanding of creating and consuming RESTful APIs. I decided to create an application that allows me to store details of wines in a database and interact with them from a web interface.  
 
 ---
 
@@ -21,7 +20,7 @@ RESTful APIs. I decided to create an application that allows me to store details
     - **daddyswine.html** - main page containing the table
 - **templates**
     - **welcome.html** - landing/home page with link to main page
-- **.gitignore** - 
+- **.gitignore** - list of files/directories to ignore
 - **WineDao.py** - DAO (data access object) links the web interface to the database
 - **configTemplate.py** - template for creating config file for user
 - **requirements.txt** - contains details of all packages used
@@ -34,10 +33,8 @@ RESTful APIs. I decided to create an application that allows me to store details
 ![wine](/images/pythonAnywhere.jpeg)  
 
 The application can be viewed here with pythonanywhere:  
-Login screen (not working!) - https://caoimhinv.pythonanywhere.com/login.html
-Welcome page - https://caoimhinv.pythonanywhere.com/welcome.html
-Main page - https://caoimhinv.pythonanywhere.com/daddyswine.html
-Create function not working!
+https://caoimhinv.pythonanywhere.com  
+Just follow the prompts.  
 
 You can skip the next few steps if you want an easier life!
 
