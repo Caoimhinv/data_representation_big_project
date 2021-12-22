@@ -17,10 +17,10 @@ The brief for this project was to write a program that demonstrates an understan
 
 - **images** - folder of images used in the project
 - **static_pages**
-    - **daddyswine.html** - main page containing the table and options for CRUD operations
-- **templates**
-    -**login.html** - html page for loggin in
-    - **welcome.html** - landing/welcome page with link to continue to main page or logout
+    - **daddyswine.html** - html file for main page containing the table and options for CRUD operations
+- **templates**  
+    - **login.html** - html page for logging in
+    - **welcome.html** - html landing/welcome page with link to continue to main page or logout
 - **.gitignore** - list of files/directories to ignore
 - **WineDao.py** - DAO (data access object) links the web interface to the database
 - **configTemplate.py** - template for creating config file for user
@@ -103,6 +103,7 @@ If your details are accepted, you will be welcomed at the next page where you ca
 
 ---
 ## Credits/References
+A lot of the intitial code for the flask server and dao file were given during lectures. I just developed these a little further to suit my own requirements. 
 
 https://developer.mozilla.org/en-US/docs/Web/CSS/background-color
 
@@ -114,6 +115,7 @@ https://realpython.com/introduction-to-flask-part-2-creating-a-login-page/
 
 https://stackoverflow.com/questions/20137688/login-with-flask-framework
 
+https://github.com/RitRa/data-representation-project/blob/master/application.py
 
 ---
 <br>

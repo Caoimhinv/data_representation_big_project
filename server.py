@@ -1,14 +1,12 @@
+# importing necessary libraries
 from flask import Flask, url_for, request, redirect, abort, jsonify, render_template, session, make_response
+
+# importing DAO file to interact with database
 from WineDao import wineDao
 
 app = Flask(__name__, static_url_path='', static_folder='static_pages')
 
-# from - https://realpython.com/introduction-to-flask-part-2-creating-a-login-page/
-# NOT WORKING THOUGH?????
-# https://github.com/RitRa/data-representation-project/blob/master/application.py
-# https://stackoverflow.com/questions/20137688/login-with-flask-framework
-
-# ----
+# checking if the user exsits in the database
 @app.route('/login', methods=['GET','POST'])
 def login():
     error = None
@@ -25,28 +23,7 @@ def login():
             return error
     return render_template('login.html', error=error)
 
-# ------
-
-# app.secret_key = 'betyacantguessthis1'
-
-# @app.route('/')
-# def home():
-#     if not 'username' in session:
-#         return redirect(url_for('login'))
-#     # return render_template('welcome.html')
-#     return 'Welcome ' + session['username'] +\
-#         '<br>' +\
-#         '<button>' +\
-#             '<a href="'+url_for('welcome')+'">' +\
-#                 'Continue' +\
-#             '</a>' +\
-#         '</button>' +\
-#         '<button>' +\
-#             '<a href="'+url_for('logout')+'">' +\
-#                 'Logout' +\
-#             '</a>' +\
-#         '</button>'
-
+# home
 @app.route('/')
 def home():
     return 'Hello you!' +\
@@ -57,29 +34,7 @@ def home():
             '</a>' +\
         '</button>'
 
-# @app.route('/login')
-# def login():
-#     return '<h1>Login</h1> '+\
-#         '<body style="background-color:ivory;">'+\
-#         '<button>'+\
-#             '<a href="'+url_for('process_login')+'">' +\
-#                 'Login' +\
-#             '</a>' +\
-#         '</button>' +\
-#         '</body>' +\
-#         '<img src="https://media.istockphoto.com/vectors/red-wine-glass-icon-illustration-vector-id1132889797?k=20&m=1132889797&s=612x612&w=0&h=789LAtKiSQynEGPCS_j3nivLwWPkaCgDAYeLeCM6rYI=" +\
-#         alt="Wine_image" align="top" height=300 width=400>'
-
-# @app.route('/processlogin')
-# def process_login():
-#     session['username'] = "Wine Person!"
-#     return redirect(url_for('home'))
-
-# @app.route('/logout')
-# def logout():
-#     session.pop('username',None)
-#     return redirect(url_for('home'))
-
+# welcome page
 @app.route('/welcome', methods=['GET', 'POST'])
 def welcome():
     return render_template('welcome.html') 
@@ -108,7 +63,6 @@ def create():
         "regionCountry": request.json["regionCountry"],
     }
     return jsonify(wineDao.create(wine))
-    # return "served by Create "
 
 # update
 @app.route('/wines/<int:ID>', methods=['PUT'])

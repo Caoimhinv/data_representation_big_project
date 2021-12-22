@@ -1,8 +1,11 @@
+# imports necessary libraries
 import mysql.connector
 from mysql.connector import cursor
 import dbConfig as cfg
 
 class WineDao:
+
+    # mySQL connection using config file
     db=""
     def __init__(self):
         self.db = mysql.connector.connect(
@@ -11,18 +14,8 @@ class WineDao:
             password = cfg.mysql['password'],
             database = cfg.mysql['database'],
         )
-        # return db
-    
-    # def getConnection(self):
-    #     db = mysql.connector.connect(
-    #         pool_name = 'my_connection_pool',
-    #     )
-    #     return db
 
-    # def __init__(self):
-    #     db = self.initConnectToDB()
-    #     db.close()
-
+    # creates and inserts a wine into database
     def create(self, wine):
         cursor = self.db.cursor()
         sql = "insert into wines3 (nameProducer, vintage, regionCountry) values (%s, %s, %s)"
@@ -37,6 +30,7 @@ class WineDao:
         cursor.close()
         return lastRowId
 
+    # returns all wines from database
     def getAll(self):
         cursor = self.db.cursor()
         sql = 'select * from wines3'
@@ -51,6 +45,7 @@ class WineDao:
         cursor.close()
         return returnArray
 
+    # returns a specific wine from database
     def findById(self, ID):
         cursor = self.db.cursor()
         sql = 'select * from wines3 where ID = %s'
@@ -60,7 +55,8 @@ class WineDao:
         wine = self.convertToDict(result)
         cursor.close()
         return wine
-        
+    
+    # updates a wine in database
     def update(self, wine):
         cursor = self.db.cursor()
         sql = "update wines3 set nameProducer = %s, vintage = %s, regionCountry = %s where ID = %s"
@@ -75,6 +71,7 @@ class WineDao:
         cursor.close()
         return wine
 
+    # deletes a wine from database
     def delete(self, ID):
         cursor = self.db.cursor()
         sql = 'delete from wines3 where ID = %s'
@@ -84,6 +81,7 @@ class WineDao:
         cursor.close()
         return {}
 
+    # converts the values to dictionary items
     def convertToDict(self, result):
         colnames = ['ID', 'nameProducer', 'vintage', 'regionCountry']
         wine = {}
@@ -93,6 +91,7 @@ class WineDao:
                 wine[colName] = value
         return wine
 
+    # checks user is in database
     def checkUser(self, email, password):
         cursor = self.db.cursor()
         sql="SELECT * FROM users where email=%s and password=%s"
@@ -102,6 +101,7 @@ class WineDao:
         cursor.close()
         return self.convertToDictionary2(result)
 
+    # converts the values to dictionary items
     def convertToDictionary2(self, result):
         colNames=["ID", "name", "email", "password"]
         print(colNames)
