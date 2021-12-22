@@ -7,7 +7,7 @@ class WineDao:
 
     # mySQL connection using config file
     db=""
-    def __init__(self):
+    def connectToDB(self):
         self.db = mysql.connector.connect(
             host = cfg.mysql['host'],
             user = cfg.mysql['user'],
@@ -15,9 +15,17 @@ class WineDao:
             database = cfg.mysql['database'],
         )
 
+    def __init__(self):
+        self.connectToDB()
+    
+    def getCursor(self):
+        if not self.db.is_connected():
+            self.connectToDB()
+        return self.db.cursor()
+
     # creates and inserts a wine into database
     def create(self, wine):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql = "insert into wines3 (nameProducer, vintage, regionCountry) values (%s, %s, %s)"
         values = [
             wine['nameProducer'],
@@ -32,7 +40,7 @@ class WineDao:
 
     # returns all wines from database
     def getAll(self):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql = 'select * from wines3'
         cursor.execute(sql)
         results = cursor.fetchall()
@@ -47,7 +55,7 @@ class WineDao:
 
     # returns a specific wine from database
     def findById(self, ID):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql = 'select * from wines3 where ID = %s'
         values = [ID]
         cursor.execute(sql, values)
@@ -58,7 +66,7 @@ class WineDao:
     
     # updates a wine in database
     def update(self, wine):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql = "update wines3 set nameProducer = %s, vintage = %s, regionCountry = %s where ID = %s"
         values = [
             wine['nameProducer'],
@@ -73,7 +81,7 @@ class WineDao:
 
     # deletes a wine from database
     def delete(self, ID):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql = 'delete from wines3 where ID = %s'
         values = [ID]
         cursor.execute(sql, values)
@@ -93,7 +101,7 @@ class WineDao:
 
     # checks user is in database
     def checkUser(self, email, password):
-        cursor = self.db.cursor()
+        cursor = self.getCursor()
         sql="SELECT * FROM users where email=%s and password=%s"
         values = (email, password)
         cursor.execute(sql, values)
